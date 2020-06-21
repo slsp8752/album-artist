@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Album Artist</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style type="text/css">
+      .text-overflow {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 500px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="cursor" id="cursorDiv">
+      <div class="cursor__ball cursor__ball--small">
+        <svg>
+          <circle id ="circleCursor" cx="5" cy="5" r="4" stroke="gray" stroke-width="1" fill="#f7f8fa"></circle>
+        </svg>
+      </div>
+    </div>
+        <!-- <a href="/login" class="btn btn-primary">Log in with Spotify</a> -->
+<!--
+    <script id="user-profile-template" type="text/x-handlebars-template"> -->
+
+      <div id="sketchpad" class="w-100"></div>
+      <footer class="footer fixed-bottom bg-dark" id="loggedin">
+        <div class="form-inline">
+          <div class="album-container hideonmobile2" id="album-art-refresh">
+            <img id="album-art" class="media-object" width="100" src="assets/img/note.png"/>
+            <div class="album-overlay">
+                <i class="fas fa-sync-alt refresh-icon"></i>
+              </div>
+          </div>
+          <div class="chop hideonmobile1">
+            <ul class="list-group list-unstyled ml-3">
+              <li class="text-white-50 text-truncate" id="track">Track Title</li>
+              <li class="text-white-50 text-truncate" id="artist">Artist</li>
+              <li class="text-white-50 text-truncate" id="album">Album</li>
+            </ul>
+          </div>
+
+          <div id="color-buttons" class="ml-3 mr-3 ml-auto">
+            <button type="button" id="pencil" class="btn btn-secondary btn-palette">
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+            <button type="button" id="eraser" class="btn btn-secondary btn-palette">
+              <i class="fas fa-eraser"></i>
+            </button>
+            <button type="button" id="undo" class="btn btn-secondary btn-palette">
+              <i class="fas fa-undo-alt"></i>
+            </button>
+            <button type="button" id="redo" class="btn btn-secondary btn-palette">
+              <i class="fas fa-redo-alt"></i>
+            </button>
+            <!-- <button type="button" id="download" class="btn btn-secondary btn-palette">
+              <i class="fas fa-file-download"></i>
+            </button> -->
+            <a href="#" class="btn btn-secondary btn-palette" id="download">
+              <i class="fas fa-file-download"></i>
+            </a>
+            <button type="button" id="clear" class="btn btn-secondary btn-palette" data-toggle="modal" data-target="#clearModal">
+              <i class="fas fa-trash"></i>
+            </button>
+
+            <div id="dropups" class="btn-group dropup">
+              <button type="button" id="pal1a" class="btn btn-palette dropdown-toggle caret-off" data-offset="0,20" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                &nbsp;
+              </button>
+              <div class="dropdown-menu dropdown-menu-right dropdown-dark" style="width:220px;">
+                  <form class="px-4 py-3">
+                    <div class="form-group justify-content-center d-inline-flex wrap-fix">
+                    <button type="button" onclick="changeFGColor(event)" id="pal1" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeFGColor(event)" id="pal2" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeFGColor(event)" id="pal3" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeFGColor(event)" id="pal4" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeFGColor(event)" id="pal5" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeFGColor(event)" id="pal6" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeFGColor(event)" id="pal7" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeFGColor(event)" id="pal8" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                  </div>
+                  <div class="dropdown-divider"></div>
+                  <div class="form-group d-inline-flex justify-content-center wrap-fix">
+                    <div class="slidecontainer">
+                      <input type="range" min="1" max="100" value="50" class="slider" id="sizeSlider" style="width: 150px;">
+                    </div>
+                    <svg id="previewSvg" width="62" height="62">
+                      <circle id ="brushPreview" cx="31" cy="31" r="4" stroke="gray" stroke-width="1" fill="#63c155"></circle>
+                    </svg>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="btn-group dropup">
+              <button type="button" id="pal2a" class="btn btn-palette dropdown-toggle caret-off" data-offset="0,20" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                &nbsp;
+              </button>
+              <div class="dropdown-menu dropdown-menu-right dropdown-dark" style="width:220px;">
+                  <form class="px-4 py-3">
+                    <div class="form-group justify-content-center d-inline-flex wrap-fix">
+                    <button type="button" onclick="changeBGColor(event)" id="pal1b" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeBGColor(event)" id="pal2b" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeBGColor(event)" id="pal3b" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeBGColor(event)" id="pal4b" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeBGColor(event)" id="pal5b" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeBGColor(event)" id="pal6b" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeBGColor(event)" id="pal7b" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                    <button type="button" onclick="changeBGColor(event)" id="pal8b" class="btn btn-palette mr-1 mb-1">&nbsp;</button>
+                  </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      <div class="modal fade" id="newAlbumModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content bg-dark">
+            <div class="modal-header">
+              <h5 class="modal-title text-light" id="staticBackdropLabel">New Album Art</h5>
+            </div>
+            <div class="modal-body text-light">
+              <p>The album art has changed. The palette will be updated and the image will be erased. Would you like to download your image?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="downloadCancel">No</button>
+              <a href="#" class="btn btn-primary" id="newAlbumDownloadButton">Yes</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="clearModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content bg-dark">
+            <div class="modal-header">
+              <h5 class="modal-title text-light" id="staticBackdropLabel">Delete Image?</h5>
+            </div>
+            <div class="modal-body text-light">
+              <p>This will delete your current image and cannot be undone! Are you sure you want to do that?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No, go back!</button>
+              <button type="button" id="clearConfirmButton" class="btn btn-primary">Yes, delete it</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="pausedModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content bg-dark">
+            <div class="modal-header">
+              <h5 class="modal-title text-light" id="staticBackdropLabel">Playback is Paused</h5>
+            </div>
+            <div class="modal-body text-light">
+              <p>It looks like your music is paused, or you aren't playing anything. Please continue playback and then click 'Continue' below. You may need to restart the song you were listening to if you've just opened Spotify.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="recheckPauseStatusButton" class="btn btn-primary">Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- </script> -->
+    <script type="text/javascript" src="https://kit.fontawesome.com/d152ce0bae.js" crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+    <!-- <script src="assets/js/sketchpad.js"></script> -->
+    <script src="assets/js/responsive-sketchpad.js"></script>
+    <script src="assets/js/sketchpad-ui.js"></script>
+    <script src="assets/js/spotify-info.js"></script>
+    <script src="assets/js/vibrant.js"></script>
+    <script src="assets/js/helper.js"></script>
+    <script src="assets/js/cursor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+
+  </body>
+</html>

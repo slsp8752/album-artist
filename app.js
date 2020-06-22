@@ -18,6 +18,9 @@ const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 const redirect_uri = process.env.REDIRECT;
 
+var refresh_token;
+var access_token;
+
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
@@ -91,7 +94,7 @@ app.get('/callback', function(req, res) {
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
 
-        var access_token = body.access_token,
+            access_token = body.access_token;
             refresh_token = body.refresh_token;
 
         // var options = {
@@ -106,11 +109,7 @@ app.get('/callback', function(req, res) {
         // });
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect('/app#' +
-          querystring.stringify({
-            access_token: access_token,
-            refresh_token: refresh_token
-          }));
+        res.redirect('/app');
       } else {
         res.redirect('/app#' +
           querystring.stringify({
@@ -125,10 +124,48 @@ app.get('/app', function(req, res){
   res.sendFile(__dirname + '/public/app.html');
 });
 
+app.get('/track_info', function(req, res){
+  console.log("GOT REQUEST");
+  console.log(access_token);
+  var options = {
+    url: 'https://api.spotify.com/v1/me/player/currently-playing',
+    headers: {'Authorization': 'Bearer ' + access_token},
+    data: {'additional_types': 'episode'},
+    json: true
+  };
+
+  request.get(options, function(error, response, body){
+    console.log(error);
+    console.log(response.statusCode);
+    if(!error && response.statusCode == 200){
+      if(body.item.type == 'episode'){
+        var artist = body.item.show.name;
+        var album = body.item.show.publisher;
+        var art = body.item.images[0].url;
+      }
+      else{
+        var artist = body.item.artists[0].name;
+        var album = body.item.album.name;
+        var art = body.item.album.images[0].url;
+      }
+      console.log(album);
+      console.log(artist);
+      res.send({
+        'track': body.item.name,
+        'artist': artist,
+        'album': album,
+        'art': art,
+        'is_playing': body.is_playing,
+        'duration': body.item.duration_ms,
+        'progress': body.progress_ms
+      })
+    }
+  });
+});
+
 app.get('/refresh_token', function(req, res) {
 
   // requesting access token from refresh token
-  var refresh_token = req.query.refresh_token;
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
@@ -141,10 +178,7 @@ app.get('/refresh_token', function(req, res) {
 
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
-      res.send({
-        'access_token': access_token
-      });
+      access_token = body.access_token;
     }
   });
 });

@@ -23,13 +23,7 @@ var pageLoad = false;
     artElement.src = "assets/img/note.png"
     function getTrackData(){
       $.ajax({
-          url: 'https://api.spotify.com/v1/me/player/currently-playing',
-          headers: {
-            'Authorization': 'Bearer ' + access_token
-          },
-          data: {
-            'additional_types': 'episode'
-          },
+          url: '/track_info',
           success: function(response) {
             var spotifyData = {
               "album_art" : "assets/img/note.png",
@@ -53,20 +47,13 @@ var pageLoad = false;
               }
               else{
                 $('#pausedModal').modal('hide');
-                if(response.item.type == 'episode'){
-                  artistElement.innerHTML = response.item.show.name;
-                  albumElement.innerHTML = response.item.show.publisher;
-                  var albumSource = response.item.images[0].url
-                }
-                else{
-                  artistElement.innerHTML = response.item.artists[0].name;
-                  albumElement.innerHTML = response.item.album.name;
-                  var albumSource = response.item.album.images[0].url
-                }
-                trackElement.innerHTML = response.item.name;
+                artistElement.innerHTML = response.artist;
+                albumElement.innerHTML = response.album;
+                var albumSource = response.art
+                trackElement.innerHTML = response.track;
 
-                var trackDuration = response.item.duration_ms;
-                var trackProgress = response.progress_ms;
+                var trackDuration = response.duration;
+                var trackProgress = response.progress;
                 console.log(trackDuration);
                 console.log(trackProgress);
                 clearTimeout(trackTimer);
@@ -80,7 +67,6 @@ var pageLoad = false;
                   if(pageLoad == true){
                     $('#newAlbumModal').modal('show');
                   }
-                  //todo: clear/download modal
                   artElement.src = albumSource;
                   const album = document.querySelector('img').src;
                   const colorThief = new ColorThief();
@@ -129,32 +115,15 @@ var pageLoad = false;
 
     if (error) {
       alert('There was an error during the authentication');
-    } else {
-      if (access_token) {
-        getTrackData();
-
-      } else {
-          // render initial screen
-          //TODO: show error modal with button to go back to home page
-          // $('#login').show();
-          // $('#loggedin').hide();
-          // $('#cursorDiv').hide();
-          // $('#sketchpad').hide();
-      }
-
-      function getNewToken(){
-        $.ajax({
-          url: '/refresh_token',
-          data: {
-            'refresh_token': refresh_token          }
-        }).done(function(data) {
-          access_token = data.access_token;
-          console.log(data);
-          console.log("REFRESH: " + refresh_token);
-          console.log("ACCESS: " + access_token);
-        });
-        setTimeout(getNewToken, 3500000);
-      }
-      getNewToken();
+    }
+    else {
+      getTrackData();
+      // getNewToken();
+    }
+    function getNewToken(){
+      $.ajax({
+        url: '/refresh_token',
+      });
+      setTimeout(getNewToken, 3500000);
     }
   })();

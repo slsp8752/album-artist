@@ -40,8 +40,8 @@ artElement.src = "";
 
         // opts.aspectRatio = opts.aspectRatio || 1;
         opts.aspectRatio = opts.aspectRatio || opts.height / opts.width;
-        console.log(opts.height);
-        console.log(opts.width);
+        // console.log(opts.height);
+        // console.log(opts.width);
         opts.width = opts.width || el.clientWidth;
 
         opts.height = opts.height || opts.width * opts.aspectRatio;
@@ -139,7 +139,13 @@ artElement.src = "";
 
         function downloadCanvas(el){
           el.download = "image.png";
-          el.href = getCanvasData();
+          console.log(el);
+          if(el.id == "download"){
+            el.href = getCanvasData(currentBGColor);
+          }
+          else{
+            el.href = getCanvasData(prevBGColor);
+          }
         }
 
         var button = document.getElementById('download');
@@ -164,9 +170,10 @@ artElement.src = "";
           pad.clear();
           $('#newAlbumModal').modal('hide');
           document.body.style.backgroundColor = currentBGColor;
+
         }
 
-        function getCanvasData() {
+        function getCanvasData(bgColor) {
           var hiddenCanvas = document.createElement('canvas');
           hiddenCanvas.style.display = 'none';
           document.body.appendChild(hiddenCanvas);
@@ -174,7 +181,7 @@ artElement.src = "";
           hiddenCanvas.height = canvas.height;
           var hiddenCtx = hiddenCanvas.getContext('2d');
           // hiddenCtx.fillStyle = document.body.style.backgroundColor;
-          hiddenCtx.fillStyle = prevBGColor;
+          hiddenCtx.fillStyle = bgColor;
           hiddenCtx.fillRect(0, 0, hiddenCanvas.width, hiddenCanvas.height);
           hiddenCtx.drawImage(canvas, 0, 0, hiddenCanvas.width, hiddenCanvas.height);
           var hiddenData = hiddenCanvas.toDataURL("image/png");
@@ -480,7 +487,7 @@ Sketchpad.prototype.toDataURL = function(type)
      */
     Sketchpad.prototype.resize = function (width) {
         //var height = width * this.opts.aspectRatio;
-        console.log(this.opts.aspectRatio);
+        // console.log(this.opts.aspectRatio);
         this.opts.lineSize = this.opts.lineSize * (width / this.opts.width);
         this.opts.width = width;
         this.opts.height = window.innerHeight - 100

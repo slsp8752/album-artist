@@ -1,5 +1,5 @@
 var el = document.getElementById('sketchpad');
-console.log(el);
+// console.log(el);
 
 
 // var body = document.body,

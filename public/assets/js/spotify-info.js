@@ -1,7 +1,6 @@
 var trackTimer;
 
 var pageLoad = false;
-
   (function() {
 
     /**
@@ -35,14 +34,14 @@ var pageLoad = false;
             var artistElement = document.getElementById("artist");
             var albumElement = document.getElementById("album");
             var artElement = document.getElementById("album-art");
-            console.log(artElement);
-            if(response == undefined){
+            // console.log(artElement);
+            if(response.valid == false){
               $('#pausedModal').modal('show');
             }
             else{
-              console.log(response);
+              // console.log(response);
               if(response.is_playing == false){
-                console.log("track is paused");
+                // console.log("track is paused");
                 $('#pausedModal').modal('show');
               }
               else{
@@ -54,8 +53,8 @@ var pageLoad = false;
 
                 var trackDuration = response.duration;
                 var trackProgress = response.progress;
-                console.log(trackDuration);
-                console.log(trackProgress);
+                // console.log(trackDuration);
+                // console.log(trackProgress);
                 clearTimeout(trackTimer);
                 trackTimer = setTimeout(getTrackData, (trackDuration-trackProgress)+1000);
                 // $('#login').hide();
@@ -77,6 +76,7 @@ var pageLoad = false;
                      palette = colorThief.getPalette(img);
                      prevBGColor = currentBGColor;
                      currentBGColor = "rgb(" + palette[1].join() + ")";
+                     // console.log(currentBGColor);
                      if(pageLoad == false){
                        document.body.style.backgroundColor = "rgb(" + palette[1].join() + ")";
                        pageLoad = true;

@@ -1,3 +1,10 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
 .footer {
   height: 100px;
 }
@@ -34,22 +41,29 @@ canvas{
 }
 
 #color-buttons{
-  box-shadow: 0 0 0 8px rgba(43, 45, 46, 1);
+  -webkit-box-shadow: 0 0 0 8px rgba(43, 45, 46, 1);
+          box-shadow: 0 0 0 8px rgba(43, 45, 46, 1);
   background-color: rgba(43, 45, 46, 1);
   border-radius: 2px;
 }
 
 .wrap-fix{
-  flex-flow: row wrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
 }
 
 .control-buttons{
-  box-shadow: 0 0 0 8px rgba(43, 45, 46, 1);
+  -webkit-box-shadow: 0 0 0 8px rgba(43, 45, 46, 1);
+          box-shadow: 0 0 0 8px rgba(43, 45, 46, 1);
   background-color: rgba(43, 45, 46, 1);
   border-radius: 2px;
 }
 
 .btn-div{
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 
@@ -63,7 +77,8 @@ canvas{
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   text-align: center;
 }
@@ -77,6 +92,8 @@ canvas{
   height: 100%;
   width: 100px;
   opacity: 0;
+  -webkit-transition: .1s linear;
+  -o-transition: .1s linear;
   transition: .1s linear;
   cursor: pointer;
 }
@@ -86,14 +103,18 @@ canvas{
 } */
 
 .album-container:hover #album-art{
-  filter:brightness(50%);
+  -webkit-filter:brightness(50%);
+          filter:brightness(50%);
 }
 
 #album-art{
+  -webkit-transition: .2s linear;
+  -o-transition: .2s linear;
   transition: .2s linear;
 }
 #album-art:hover{
-  filter:brightness(50%);
+  -webkit-filter:brightness(50%);
+          filter:brightness(50%);
 }
 
 .album-overlay:hover {
@@ -111,8 +132,7 @@ canvas{
   cursor: none;
 }
 
-circle{
-  mix-blend-mode: difference;
+#circleCursor{
   opacity: 75%;
 }
 
@@ -146,7 +166,8 @@ circle{
 }
 
 .btn-palette{
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
+  -webkit-box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
+          box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
   /* box-shadow: 0 5px 15px rgba(255, 255, 255, .4); */
 }
 

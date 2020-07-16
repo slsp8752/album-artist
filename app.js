@@ -125,8 +125,8 @@ app.get('/app', function(req, res){
 });
 
 app.get('/track_info', function(req, res){
-  console.log("GOT REQUEST");
-  console.log(access_token);
+  // console.log("GOT REQUEST");
+  // console.log(access_token);
   var options = {
     url: 'https://api.spotify.com/v1/me/player/currently-playing',
     headers: {'Authorization': 'Bearer ' + access_token},
@@ -135,9 +135,15 @@ app.get('/track_info', function(req, res){
   };
 
   request.get(options, function(error, response, body){
-    console.log(error);
-    console.log(response.statusCode);
+    // console.log(error);
+    // console.log(response);
+    // console.log(response.statusCode);
+    console.log(response);
+    console.log(body);
     if(!error && response.statusCode == 200){
+      console.log(response);
+      console.log(body);
+      console.log(body.actions.disallows)
       if(body.item.type == 'episode'){
         var artist = body.item.show.name;
         var album = body.item.show.publisher;
@@ -148,9 +154,10 @@ app.get('/track_info', function(req, res){
         var album = body.item.album.name;
         var art = body.item.album.images[0].url;
       }
-      console.log(album);
-      console.log(artist);
+      // console.log(album);
+      // console.log(artist);
       res.send({
+        'valid': true,
         'track': body.item.name,
         'artist': artist,
         'album': album,
@@ -158,6 +165,11 @@ app.get('/track_info', function(req, res){
         'is_playing': body.is_playing,
         'duration': body.item.duration_ms,
         'progress': body.progress_ms
+      })
+    }
+    else{
+      res.send({
+        'valid': false
       })
     }
   });
@@ -187,5 +199,5 @@ let port = process.env.PORT;
 if (port == null || port == "") {
   port = 8888;
 }
-console.log(port);
+// console.log(port);
 app.listen(port);

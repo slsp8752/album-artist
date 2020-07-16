@@ -36,7 +36,8 @@ function changeFGColor(e){
 
 function changeBGColor(e){
   var color = e.target.style.backgroundColor;
-  console.log(color);
+  //console.log(color);
   document.body.style.backgroundColor = color;
   document.getElementById("pal2a").style.backgroundColor = color;
+  currentBGColor = color;
 }
